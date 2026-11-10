@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shapecraft — describe it, shape it, make it yours</title>
+  <title>Shapecraft — describe it, shape it, make it</title>
   <meta name="description" content="Shapecraft turns a plain-English prompt into a real, printable 3D model — multi-part assemblies, true-to-spec dimensions, ready for your printer." />
   <meta property="og:title" content="Shapecraft — text to CAD for makers" />
   <meta property="og:description" content="Describe a part in plain English. Shapecraft designs a real, parametric, printable model — and splits it into parts when it needs to." />
@@ -32,7 +32,7 @@
     <section class="hero">
       <div class="hero-copy">
         <div class="eyebrow">Text to CAD for makers</div>
-        <h1>Describe it. Shape it.<br /><span class="accent">Make it yours.</span></h1>
+        <h1>Describe it. Shape it.<br /><span class="accent">Make it.</span></h1>
         <p class="lede">
           Shapecraft turns a plain-English prompt into a real, parametric 3D model — one that
           fits real hardware, splits into parts when it needs to, and exports straight to your printer.
@@ -42,39 +42,44 @@
           <a class="btn btn-ghost" href="#how">See how it works</a>
         </div>
         <ul class="hero-badges">
-          <li>No CAD skills</li>
+          <li>No CAD experience</li>
           <li>Print-ready solids</li>
           <li>STL &amp; STEP export</li>
         </ul>
       </div>
 
-      <!-- TYPE-ON DEMO MOCK -->
-      <div class="demo" id="demo" aria-label="Demo: typing a prompt and getting a model">
+      <!-- DEMO: shaping a part through conversation -->
+      <div class="demo" id="demo" aria-label="Demo: shaping a part through conversation">
         <div class="demo-chrome">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="demo-tab">shapecraft</span>
+          <span class="demo-tab">shapecraft · Pi 5 Enclosure</span>
         </div>
-        <div class="demo-stage">
-          <div class="demo-grid"></div>
-          <img class="demo-model" src="assets/base.png" alt="Generated Raspberry Pi 5 snap-fit enclosure" />
-          <div class="demo-status" aria-live="polite">
-            <span class="spinner"></span><span class="demo-status-label">Building Base…</span>
+        <div class="demo-thread" id="demoThread">
+          <!-- turn 1: describe it -->
+          <div class="d-msg user" data-step="0" hidden></div>
+          <div class="d-msg bot" data-step="0" hidden>
+            <p>I’ll make a <strong>two-piece enclosure</strong> — a snap-fit lid over a base, with ventilation and cutouts for the ports, microSD, and power button. Building <strong>2 parts</strong>: a Base tray and a ventilated Lid.</p>
+            <figure class="d-card building">
+              <div class="d-card-stage"><span class="spinner"></span><img src="assets/demo/step1.png" alt="Raspberry Pi 5 enclosure — base and lid" /></div>
+              <figcaption><span>Raspberry Pi 5 Enclosure</span><span class="d-tag">Base · Lid</span></figcaption>
+            </figure>
           </div>
-          <div class="demo-title">Raspberry Pi 5 Snap-Fit Enclosure</div>
-          <div class="demo-parts">
-            <span class="demo-part is-on">Base</span>
-            <span class="demo-part">Lid</span>
+          <!-- turn 2: refine it in chat -->
+          <div class="d-msg user" data-step="1" hidden></div>
+          <div class="d-msg bot" data-step="1" hidden>
+            <p>Done — switched the cooling vents on the Base and Lid to <strong>hexagonal holes</strong>. The shell, ports, and snap-fit features are unchanged.</p>
+            <figure class="d-card building">
+              <div class="d-card-stage"><span class="spinner"></span><img src="assets/demo/step2.png" alt="Enclosure updated with hexagonal vents" /></div>
+              <figcaption><span>Updated · hexagonal vents</span><span class="d-tag">rev 2</span></figcaption>
+            </figure>
           </div>
         </div>
-        <div class="demo-dock">
-          <div class="demo-msg" hidden></div>
-          <div class="demo-composer">
-            <div class="demo-field">
-              <span class="demo-typed"></span><span class="demo-caret" aria-hidden="true"></span>
-              <span class="demo-placeholder">Describe a part…</span>
-            </div>
-            <button class="demo-send" type="button" tabindex="-1">Send ↑</button>
+        <div class="demo-composer">
+          <div class="demo-field">
+            <span class="demo-typed"></span><span class="demo-caret" aria-hidden="true"></span>
+            <span class="demo-placeholder">Describe a change…</span>
           </div>
+          <button class="demo-send" type="button" tabindex="-1">Send ↑</button>
         </div>
       </div>
     </section>
@@ -82,8 +87,8 @@
     <!-- HOW IT WORKS -->
     <section class="section" id="how">
       <div class="section-head">
-        <h2>From a sentence to a printable part</h2>
-        <p>Three steps. No sketches, no constraints, no CAD manual.</p>
+        <h2>From an idea to a printable part that actually works</h2>
+        <p>No CAD experience required. Just start shaping with Shapecraft — idea to a real, printable part in seconds.</p>
       </div>
       <ol class="steps">
         <li>
@@ -102,6 +107,46 @@
           <p>Keep chatting to adjust it, step through the revision history, then export STL to print or STEP to keep editing in any CAD tool.</p>
         </li>
       </ol>
+    </section>
+
+    <!-- PARAMETRIC -->
+    <section class="section" id="parametric">
+      <div class="param">
+        <div class="param-copy">
+          <div class="eyebrow">Parametric, not pre-made</div>
+          <h2>Every dimension is a dial you can turn.</h2>
+          <p>Everywhere else, you’re stuck downloading a <strong>pre-made design</strong> and hoping it fits. Shapecraft parts are fully parametric — wall thickness, clearances, hole sizes, counts. Change a value and the whole part rebuilds around it.</p>
+          <ul class="param-points">
+            <li>Drag a slider, or just ask for the change in chat</li>
+            <li>Every tweak stays watertight and printable</li>
+            <li>Make it fit <em>your</em> hardware, not someone else’s</li>
+          </ul>
+        </div>
+        <div class="param-panel" id="paramPanel" aria-hidden="true">
+          <div class="param-panel-head"><span>Parameters</span><span class="param-panel-sub">Pi 5 Enclosure · Base</span></div>
+          <div class="p-slider" data-min="2" data-max="5" data-unit="mm" data-dec="1">
+            <div class="p-row"><span class="p-label">Wall thickness</span><span class="p-val">4.0 mm</span></div>
+            <div class="p-track"><div class="p-fill"></div><div class="p-thumb"></div></div>
+          </div>
+          <div class="p-slider" data-min="0.2" data-max="0.6" data-unit="mm" data-dec="2">
+            <div class="p-row"><span class="p-label">Snap-fit clearance</span><span class="p-val">0.30 mm</span></div>
+            <div class="p-track"><div class="p-fill"></div><div class="p-thumb"></div></div>
+          </div>
+          <div class="p-slider" data-min="3" data-max="8" data-unit="mm" data-dec="1">
+            <div class="p-row"><span class="p-label">Vent hole Ø</span><span class="p-val">5.0 mm</span></div>
+            <div class="p-track"><div class="p-fill"></div><div class="p-thumb"></div></div>
+          </div>
+          <div class="p-slider" data-min="4" data-max="12" data-unit="mm" data-dec="1">
+            <div class="p-row"><span class="p-label">Standoff height</span><span class="p-val">8.0 mm</span></div>
+            <div class="p-track"><div class="p-fill"></div><div class="p-thumb"></div></div>
+          </div>
+          <div class="p-slider" data-min="2" data-max="6" data-unit="" data-dec="0">
+            <div class="p-row"><span class="p-label">Latch count</span><span class="p-val">4</span></div>
+            <div class="p-track"><div class="p-fill"></div><div class="p-thumb"></div></div>
+          </div>
+          <div class="param-panel-foot">Rebuilds the model live · stays watertight</div>
+        </div>
+      </div>
     </section>
 
     <!-- FEATURES -->
@@ -187,24 +232,14 @@
           <div class="listing-by">by @anupam · ★ 4.8</div>
         </figure>
         <figure class="listing">
-          <div class="listing-thumb"><img src="assets/market/window.png" alt="Gable window insert listing" /></div>
-          <figcaption><span class="listing-title">Gable Window Insert</span><span class="listing-price">$3</span></figcaption>
-          <div class="listing-by">by @rail_mods · ★ 5.0</div>
+          <div class="listing-thumb"><img src="assets/market/oven_knob.png" alt="Replacement oven knob listing" /></div>
+          <figcaption><span class="listing-title">Oven Knob · GE Profile</span><span class="listing-price">$3</span></figcaption>
+          <div class="listing-by">by @fixits · ★ 4.9</div>
         </figure>
         <figure class="listing">
-          <div class="listing-thumb"><img src="assets/market/enclosure_kit.png" alt="Rear access panel listing" /></div>
-          <figcaption><span class="listing-title">Rear Access Panel</span><span class="listing-price">$3</span></figcaption>
-          <div class="listing-by">by @casecraft · ★ 4.7</div>
-        </figure>
-        <figure class="listing">
-          <div class="listing-thumb"><img src="assets/market/roof.png" alt="HO-scale roof panel listing" /></div>
-          <figcaption><span class="listing-title">HO Roof Panel</span><span class="listing-price">$2</span></figcaption>
-          <div class="listing-by">by @rail_mods · ★ 4.9</div>
-        </figure>
-        <figure class="listing">
-          <div class="listing-thumb"><img src="assets/market/deck.png" alt="Porch deck and steps listing" /></div>
-          <figcaption><span class="listing-title">Porch Deck + Steps</span><span class="listing-price">$3</span></figcaption>
-          <div class="listing-by">by @minibuilds · ★ 4.8</div>
+          <div class="listing-thumb"><img src="assets/market/scifi_switch.png" alt="Sci-fi switch flush mount listing" /></div>
+          <figcaption><span class="listing-title">Sci-Fi Switch Flush Mount</span><span class="listing-price">$4</span></figcaption>
+          <div class="listing-by">by @propshop · ★ 5.0</div>
         </figure>
       </div>
       <p class="market-note">Set your price, keep the rights, get paid every time your design sells or prints.</p>
@@ -212,7 +247,7 @@
 
     <!-- CTA -->
     <section class="cta" id="cta">
-      <h2>Make the thing you’ve been describing.</h2>
+      <h2>Make all the things you’ve been thinking of.</h2>
       <p>Shapecraft is in early access. Leave your email and we’ll let you in.</p>
       <form class="cta-form" onsubmit="return false;">
         <input type="email" placeholder="you@example.com" aria-label="Email address" required />
@@ -224,7 +259,7 @@
 
   <footer class="footer">
     <div class="brand"><span class="brand-mark">◆</span><span class="brand-name">shapecraft</span></div>
-    <p>Describe it. Shape it. Make it yours.</p>
+    <p>Describe it. Shape it. Make it.</p>
     <small>© <span id="year"></span> Shapecraft. A text-to-CAD experiment.</small>
   </footer>
 

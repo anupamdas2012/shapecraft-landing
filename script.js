@@ -14,13 +14,15 @@
     const userMsgs = [...demo.querySelectorAll('.d-msg.user')];
     const botMsgs = [...demo.querySelectorAll('.d-msg.bot')];
     const PROMPTS = ['create a snap-fit enclosure for a Raspberry Pi 5', 'make the cooling vents hexagonal'];
+    const spinVid = demo.querySelector('.demo-spin-vid');
+    if (reduce) spinVid?.pause();
     let token = 0;
 
     const scrollDown = () => thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
     const reveal = el => { el.hidden = false; requestAnimationFrame(() => el.classList.add('show')); };
 
     function resetDemo() {
-      demo.classList.remove('typing');
+      demo.classList.remove('typing', 'spinning');
       typedEl.textContent = '';
       for (const el of [...userMsgs, ...botMsgs]) { el.hidden = true; el.classList.remove('show'); }
       for (const c of demo.querySelectorAll('.d-card')) c.classList.add('building');
@@ -47,8 +49,12 @@
         const bot = botMsgs[i]; reveal(bot); scrollDown();            // assistant reply (text + building card)
         await sleep(1500); if (!alive()) return;
         bot.querySelector('.d-card').classList.remove('building'); scrollDown();   // the model arrives
-        await sleep(i < PROMPTS.length - 1 ? 1700 : 5200); if (!alive()) return;
+        await sleep(i < PROMPTS.length - 1 ? 1700 : 1300); if (!alive()) return;
       }
+      demo.classList.add('spinning'); spinVid && spinVid.play().catch(() => {});   // full-window spin of the finished part
+      await sleep(5000); if (!alive()) return;
+      demo.classList.remove('spinning');
+      await sleep(500); if (!alive()) return;
       run();                                            // loop
     }
 

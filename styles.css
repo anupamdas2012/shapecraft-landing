@@ -94,7 +94,7 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 .demo-chrome .dot:nth-child(3) { background: #5bc06a; }
 .demo-tab { margin-left: 10px; font-size: 12.5px; color: var(--muted); font-weight: 600; }
 
-.demo { display: flex; flex-direction: column; }
+.demo { display: flex; flex-direction: column; position: relative; }
 .demo-chrome { flex: none; }
 
 /* conversation thread */
@@ -141,6 +141,14 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 .demo.typing .demo-caret { opacity: 1; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .demo-send { background: #e9ecee; color: #10130a; border: 0; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 600; flex: none; }
+
+/* full-window spin at the end of the demo: the finished part, rotating */
+.demo-spin { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: opacity .5s ease;
+  background: radial-gradient(130% 120% at 50% 32%, #1c1e23 0%, #0e1013 72%); }
+.demo.spinning .demo-spin { opacity: 1; visibility: visible; }
+.demo-spin-vid { width: 100%; height: 100%; object-fit: contain; }
+.demo-spin-tag { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 12px; color: var(--muted);
+  background: rgba(12, 13, 14, .62); border: 1px solid var(--line); padding: 4px 12px; border-radius: 999px; }
 
 /* ---------- Sections ---------- */
 .section { max-width: var(--maxw); margin: 0 auto; padding: 72px 24px; }

@@ -23,6 +23,7 @@
 
     function resetDemo() {
       demo.classList.remove('typing', 'spinning');
+      demo.classList.add('empty');                      // "What would you like to make?" until the first prompt
       typedEl.textContent = '';
       for (const el of [...userMsgs, ...botMsgs]) { el.hidden = true; el.classList.remove('show'); }
       for (const c of demo.querySelectorAll('.d-card')) c.classList.add('building');
@@ -32,6 +33,7 @@
     async function run() {
       const me = ++token; resetDemo();
       if (reduce) {                                     // show the finished conversation, no animation
+        demo.classList.remove('empty');
         for (let i = 0; i < PROMPTS.length; i++) { userMsgs[i].textContent = PROMPTS[i]; reveal(userMsgs[i]); reveal(botMsgs[i]); }
         for (const c of demo.querySelectorAll('.d-card')) c.classList.remove('building');
         return;
@@ -40,7 +42,7 @@
       await sleep(600); if (!alive()) return;
       for (let i = 0; i < PROMPTS.length; i++) {
         const p = PROMPTS[i];
-        demo.classList.add('typing');                   // type the prompt into the composer
+        demo.classList.add('typing'); demo.classList.remove('empty');   // type the prompt into the composer
         for (let k = 1; k <= p.length; k++) { typedEl.textContent = p.slice(0, k); await sleep(34 + Math.random() * 44); if (!alive()) return; }
         await sleep(520); if (!alive()) return;
         demo.classList.remove('typing'); typedEl.textContent = '';   // send -> user bubble

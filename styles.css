@@ -99,11 +99,18 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 
 /* conversation thread */
 .demo-thread {
-  height: 366px; overflow-y: auto; scrollbar-width: none; padding: 16px 14px 6px;
+  height: 366px; position: relative; overflow-y: auto; scrollbar-width: none; padding: 16px 14px 6px;
   display: flex; flex-direction: column; gap: 11px;
   background: radial-gradient(120% 90% at 50% 0%, #17191c 0%, var(--bg-2) 62%);
 }
 .demo-thread::-webkit-scrollbar { display: none; }
+/* empty state before the conversation starts */
+.demo-empty { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 5px; text-align: center; padding: 0 24px;
+  opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+.demo.empty .demo-empty { opacity: 1; }
+.demo-empty-mark { color: var(--accent); font-size: 25px; margin-bottom: 4px; }
+.demo-empty-title { font-size: 20px; font-weight: 700; color: var(--text); }
+.demo-empty-sub { font-size: 13px; color: var(--muted); }
 .d-msg { max-width: 90%; font-size: 13px; line-height: 1.45; opacity: 0; transform: translateY(7px); transition: opacity .35s ease, transform .35s ease; }
 .d-msg[hidden] { display: none; }
 .d-msg.show { opacity: 1; transform: none; }

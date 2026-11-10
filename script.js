@@ -101,4 +101,45 @@
     });
     thumb.addEventListener('pointerleave', () => { thumb.style.backgroundPositionX = '0%'; });
   }
+
+  /* ---------- Skills: sim describing a build, then the AI offers a matching expert ---------- */
+  const sim = document.getElementById('skillSim');
+  if (sim) {
+    const typedEl = sim.querySelector('.demo-typed');
+    const userMsg = sim.querySelector('.d-msg.user');
+    const botMsg = sim.querySelector('.d-msg.bot');
+    const useBtn = sim.querySelector('.sim-use');
+    const PROMPT = "I'd like to make a scale architectural model";
+    const USE_LABEL = useBtn ? useBtn.textContent : '';
+    let stoken = 0;
+    const reveal = el => { el.hidden = false; requestAnimationFrame(() => el.classList.add('show')); };
+    function reset() {
+      sim.classList.remove('typing'); sim.classList.add('empty');
+      typedEl.textContent = '';
+      for (const el of [userMsg, botMsg]) { el.hidden = true; el.classList.remove('show'); }
+      if (useBtn) { useBtn.classList.remove('used'); useBtn.textContent = USE_LABEL; }
+    }
+    async function run() {
+      const me = ++stoken; reset();
+      if (reduce) {
+        userMsg.textContent = PROMPT; reveal(userMsg); reveal(botMsg); sim.classList.remove('empty');
+        if (useBtn) { useBtn.classList.add('used'); useBtn.textContent = '✓ Active'; }
+        return;
+      }
+      const alive = () => me === stoken;
+      await sleep(700); if (!alive()) return;
+      sim.classList.add('typing'); sim.classList.remove('empty');
+      for (let k = 1; k <= PROMPT.length; k++) { typedEl.textContent = PROMPT.slice(0, k); await sleep(34 + Math.random() * 44); if (!alive()) return; }
+      await sleep(520); if (!alive()) return;
+      sim.classList.remove('typing'); typedEl.textContent = '';
+      userMsg.textContent = PROMPT; reveal(userMsg);
+      await sleep(700); if (!alive()) return;
+      reveal(botMsg);                                   // AI offers the expert
+      await sleep(1600); if (!alive()) return;
+      if (useBtn) { useBtn.classList.add('used'); useBtn.textContent = '✓ Active'; }   // accepted
+      await sleep(4200); if (!alive()) return;
+      run();
+    }
+    new IntersectionObserver(es => { for (const e of es) { if (e.isIntersecting) run(); else stoken++; } }, { threshold: 0.3 }).observe(sim);
+  }
 })();

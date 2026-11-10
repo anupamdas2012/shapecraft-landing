@@ -22,6 +22,7 @@
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#example">Example</a>
+      <a href="#skills">Skills</a>
       <a href="#marketplace">Marketplace</a>
     </nav>
     <a class="btn btn-primary nav-cta" href="#cta">Get early access</a>
@@ -33,17 +34,17 @@
       <div class="hero-copy">
         <div class="eyebrow">Text to CAD for makers</div>
         <h1>Describe it.<br />Shape it.<br /><span class="accent">Make it.</span></h1>
+        <p class="lede-lead accent">No CAD experience required.</p>
         <p class="lede">
-          Shapecraft turns a plain-English prompt into a real, manufacturable, parametric 3D model —
-          one that makes parts that actually work in the real world, in seconds, printable by any 3D printer.
-          <span class="accent">No CAD experience required.</span>
+          Shapecraft turns a plain-English prompt into a real, manufacturable, parametric 3D model that
+          actually works in the real world, in seconds, printable by any 3D printer.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#cta">Get early access</a>
           <a class="btn btn-ghost" href="#how">See how it works</a>
         </div>
         <ul class="hero-badges">
-          <li>No CAD experience</li>
+          <li>Prototype in seconds</li>
           <li>Print-ready solids</li>
           <li>STL &amp; STEP export</li>
         </ul>
@@ -100,7 +101,7 @@
     <section class="section" id="how">
       <div class="section-head">
         <h2>From an idea to a printable part that actually works</h2>
-        <p>No CAD experience required. Just start shaping with Shapecraft — idea to a real, printable part in seconds.</p>
+        <p>This isn’t AI slop — it’s human-guided and agent-tuned, designed to your exact specifications, empowering you to be creative and explore ideas as fast as you can think. All without CAD experience. Idea to printable part in seconds.</p>
       </div>
       <ol class="steps">
         <li>
@@ -221,6 +222,52 @@
             <img src="assets/lid.png" alt="Ventilated snap-on lid" />
             <figcaption><strong>Lid</strong> · 94 × 62 × 14 mm · watertight</figcaption>
           </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section section-alt" id="skills">
+      <div class="skills">
+        <div class="skills-copy">
+          <div class="eyebrow">Reusable skills</div>
+          <h2>Make it work the way you work.</h2>
+          <p>Create reusable <strong>expert skills</strong> — personas that capture how you work. Tell Shapecraft “you are a modelmaker specializing in architectural models,” and it builds like one on every part. Then share your experts in the community skills hub.</p>
+          <ul class="param-points">
+            <li>Write it once, in plain English</li>
+            <li>Applies automatically to every part you make</li>
+            <li>Publish yours — and pull others' — from the hub</li>
+          </ul>
+        </div>
+        <div class="skills-demo">
+          <div class="skill-sim demo empty" id="skillSim" aria-label="Expert suggestion demo">
+            <div class="demo-chrome">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="demo-tab">shapecraft</span>
+            </div>
+            <div class="demo-thread sim-thread">
+              <div class="demo-empty"><span class="demo-empty-mark">◆</span><span class="demo-empty-title">What would you like to make?</span></div>
+              <div class="d-msg user" hidden></div>
+              <div class="d-msg bot" hidden>
+                <p>Sure — want me to use the <strong>Architectural Modelmaker</strong> expert for this?</p>
+                <div class="sim-expert">
+                  <span class="skill-ava" aria-hidden="true">🤖</span>
+                  <span class="skill-meta"><span class="skill-kind">Expert skill</span><span class="skill-title">Architectural Modelmaker</span></span>
+                  <button class="sim-use" type="button" tabindex="-1">Use expert →</button>
+                </div>
+              </div>
+            </div>
+            <div class="demo-composer">
+              <div class="demo-field"><span class="demo-typed"></span><span class="demo-caret" aria-hidden="true"></span><span class="demo-placeholder">Describe what you want to make…</span></div>
+              <button class="demo-send" type="button" tabindex="-1">Send ↑</button>
+            </div>
+          </div>
+          <div class="skill-hub">
+            <span class="skill-hub-label">Community skills hub</span>
+            <div class="skill-chips">
+              <span>RC Car Chassis</span><span>Tabletop Terrain</span><span>Enclosure Pro</span><span>Jewelry Settings</span><span>Drone Frames</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

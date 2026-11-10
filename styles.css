@@ -185,16 +185,6 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 .feature h3 { font-size: 17px; margin-bottom: 8px; }
 .feature p { color: var(--muted); font-size: 14.5px; margin: 0; }
 
-/* Example */
-.example { display: grid; grid-template-columns: 300px 1fr; gap: 28px; align-items: center; }
-.example-prompt { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
-.example-you { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .05em; color: var(--muted-2); margin-bottom: 10px; }
-.example-prompt p { font-size: 19px; margin: 0; color: var(--text); }
-.example-parts { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.example-parts figure { margin: 0; background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.example-parts img { display: block; width: 100%; height: auto; background: #202226; }
-.example-parts figcaption { padding: 12px 15px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); }
-.example-parts strong { color: var(--text); font-weight: 600; }
 
 /* Parametric */
 .param { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
@@ -285,12 +275,12 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
   .demo { order: -1; }
   .steps, .features { grid-template-columns: 1fr; }
   .market-grid { grid-template-columns: 1fr 1fr; }
-  .example, .param, .skills { grid-template-columns: 1fr; }
+  .param, .skills { grid-template-columns: 1fr; }
   .param-panel { order: -1; }
   .nav-links { display: none; }
 }
 @media (max-width: 560px) {
-  .example-parts, .market-grid { grid-template-columns: 1fr; }
+  .market-grid { grid-template-columns: 1fr; }
   .hero-badges { gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {

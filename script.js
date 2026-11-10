@@ -89,17 +89,37 @@
     new IntersectionObserver(es => { for (const e of es) e.isIntersecting ? start() : stop(); }, { threshold: 0.2 }).observe(panel);
   }
 
-  /* ---------- Marketplace: hover horizontally to scrub-rotate each part ---------- */
-  for (const thumb of document.querySelectorAll('.listing-thumb.spin')) {
-    const frames = +thumb.dataset.frames || 24;
-    thumb.style.backgroundSize = (frames * 100) + '% 100%';
-    thumb.addEventListener('pointermove', e => {
-      const r = thumb.getBoundingClientRect();
-      const frac = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-      const f = Math.round(frac * (frames - 1));
-      thumb.style.backgroundPositionX = (f / (frames - 1) * 100) + '%';
-    });
-    thumb.addEventListener('pointerleave', () => { thumb.style.backgroundPositionX = '0%'; });
+  /* ---------- Marketplace: rotate each part — hover-scrub on desktop, scroll-driven on touch ---------- */
+  const spinThumbs = [...document.querySelectorAll('.listing-thumb.spin')];
+  const setFrame = (t, frac) => {
+    const frames = +t.dataset.frames || 24;
+    const f = Math.round(Math.min(1, Math.max(0, frac)) * (frames - 1));
+    t.style.backgroundPositionX = (f / (frames - 1) * 100) + '%';
+  };
+  for (const t of spinThumbs) t.style.backgroundSize = ((+t.dataset.frames || 24) * 100) + '% 100%';
+
+  if (matchMedia('(hover: hover)').matches) {                 // desktop: horizontal mouse scrubs the turntable
+    for (const t of spinThumbs) {
+      t.addEventListener('pointermove', e => { const r = t.getBoundingClientRect(); setFrame(t, (e.clientX - r.left) / r.width); });
+      t.addEventListener('pointerleave', () => { t.style.backgroundPositionX = '0%'; });
+    }
+  } else if (spinThumbs.length) {                             // touch: the part rotates as its card scrolls through the viewport
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const vh = innerHeight || document.documentElement.clientHeight;
+        for (const t of spinThumbs) {
+          const r = t.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) continue;
+          setFrame(t, (vh - r.top) / (vh + r.height));        // 0 as it enters the bottom → 1 as it leaves the top
+        }
+      });
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    onScroll();
   }
 
   /* ---------- Skills: sim describing a build, then the AI offers a matching expert ---------- */

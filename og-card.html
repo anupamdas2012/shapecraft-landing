@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; }
+    .card {
+      width: 1200px; height: 630px; padding: 82px; overflow: hidden;
+      background: radial-gradient(900px 560px at 82% -14%, rgba(255, 255, 255, .22), transparent 58%),
+                  linear-gradient(135deg, #95dc2c 0%, #71a60e 100%);
+      color: #0c1400; font-family: "Inter", system-ui, sans-serif;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 16px; }
+    .brand .mark { color: #0c1400; font-size: 42px; }
+    .brand .name { font-size: 42px; font-weight: 800; letter-spacing: -.01em; }
+    h1 { font-size: 96px; font-weight: 800; line-height: 1.04; letter-spacing: -.025em; }
+    h1 .accent { color: #ffffff; }
+    .foot { font-size: 31px; color: rgba(12, 20, 0, .74); font-weight: 500; }
+    .foot .g { color: #0c1400; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="brand"><span class="mark">◆</span><span class="name">shapecraft</span></div>
+    <h1>Describe it. Shape it.<br /><span class="accent">Make it.</span></h1>
+    <div class="foot">Text to CAD for makers · <span class="g">No CAD experience required.</span></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shapecraft — describe it, shape it, make it yours</title>
+  <meta name="description" content="Shapecraft turns a plain-English prompt into a real, printable 3D model — multi-part assemblies, true-to-spec dimensions, ready for your printer." />
+  <meta property="og:title" content="Shapecraft — text to CAD for makers" />
+  <meta property="og:description" content="Describe a part in plain English. Shapecraft designs a real, parametric, printable model — and splits it into parts when it needs to." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Shapecraft home">
+      <span class="brand-mark">◆</span><span class="brand-name">shapecraft</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#example">Example</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="#cta">Get early access</a>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Text to CAD for makers</div>
+        <h1>Describe it. Shape it.<br /><span class="accent">Make it yours.</span></h1>
+        <p class="lede">
+          Shapecraft turns a plain-English prompt into a real, parametric 3D model — one that
+          fits real hardware, splits into parts when it needs to, and exports straight to your printer.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#cta">Get early access</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <ul class="hero-badges">
+          <li>No CAD skills</li>
+          <li>Print-ready solids</li>
+          <li>STL &amp; STEP export</li>
+        </ul>
+      </div>
+
+      <!-- TYPE-ON DEMO MOCK -->
+      <div class="demo" id="demo" aria-label="Demo: typing a prompt and getting a model">
+        <div class="demo-chrome">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="demo-tab">shapecraft</span>
+        </div>
+        <div class="demo-stage">
+          <div class="demo-grid"></div>
+          <img class="demo-model" src="assets/base.png" alt="Generated Raspberry Pi 5 snap-fit enclosure" />
+          <div class="demo-status" aria-live="polite">
+            <span class="spinner"></span><span class="demo-status-label">Building Base…</span>
+          </div>
+          <div class="demo-title">Raspberry Pi 5 Snap-Fit Enclosure</div>
+          <div class="demo-parts">
+            <span class="demo-part is-on">Base</span>
+            <span class="demo-part">Lid</span>
+          </div>
+        </div>
+        <div class="demo-dock">
+          <div class="demo-msg" hidden></div>
+          <div class="demo-composer">
+            <div class="demo-field">
+              <span class="demo-typed"></span><span class="demo-caret" aria-hidden="true"></span>
+              <span class="demo-placeholder">Describe a part…</span>
+            </div>
+            <button class="demo-send" type="button" tabindex="-1">Send ↑</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how">
+      <div class="section-head">
+        <h2>From a sentence to a printable part</h2>
+        <p>Three steps. No sketches, no constraints, no CAD manual.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <div class="step-num">1</div>
+          <h3>Describe</h3>
+          <p>Type what you want in plain English — “a snap-fit enclosure for a Raspberry Pi 5.” Shapecraft looks up the real dimensions so it actually fits.</p>
+        </li>
+        <li>
+          <div class="step-num">2</div>
+          <h3>Generate</h3>
+          <p>It designs a real parametric model and, when a part needs separate pieces, decomposes it into an assembly — each piece a single watertight solid.</p>
+        </li>
+        <li>
+          <div class="step-num">3</div>
+          <h3>Refine &amp; export</h3>
+          <p>Keep chatting to adjust it, step through the revision history, then export STL to print or STEP to keep editing in any CAD tool.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section section-alt" id="features">
+      <div class="section-head">
+        <h2>Built for things that have to fit</h2>
+        <p>Not a toy generator — a design tool that respects real-world constraints.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <div class="feature-ico">▦</div>
+          <h3>Multi-part assemblies</h3>
+          <p>When one solid won’t do, Shapecraft splits the design into parts, builds each on its own, and composes them back together.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-ico">⌖</div>
+          <h3>True-to-spec dimensions</h3>
+          <p>It searches for real product and hardware specs, states the numbers it used, and builds to them — so mounts and cases actually fit.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-ico">⟳</div>
+          <h3>Parametric &amp; editable</h3>
+          <p>Every model carries named parameters and a full revision tree. Nudge a value or branch a new direction without starting over.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-ico">⬇</div>
+          <h3>STL &amp; STEP export</h3>
+          <p>Download watertight STL for the printer, or editable B-rep STEP to take into Fusion, Onshape, or SolidWorks.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-ico">◈</div>
+          <h3>Print-ready by design</h3>
+          <p>Every part is validated as a single manifold solid. If it isn’t watertight, it doesn’t ship — so your slicer stays happy.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-ico">◐</div>
+          <h3>Runs in your browser</h3>
+          <p>Describe, preview, and iterate on the model right in the browser. No install, no license dongle, no setup.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- EXAMPLE -->
+    <section class="section" id="example">
+      <div class="section-head">
+        <h2>One prompt → a two-part enclosure</h2>
+        <p>Here’s a real result: a snap-fit case for a Raspberry Pi 5, built as a Base and a Lid.</p>
+      </div>
+      <div class="example">
+        <div class="example-prompt">
+          <span class="example-you">You</span>
+          <p>“create a snap-fit enclosure for a Raspberry Pi 5.”</p>
+        </div>
+        <div class="example-parts">
+          <figure>
+            <img src="assets/base.png" alt="Enclosure base with port cutouts and standoffs" />
+            <figcaption><strong>Base</strong> · 94 × 62 × 24 mm · watertight</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/lid.png" alt="Ventilated snap-on lid" />
+            <figcaption><strong>Lid</strong> · 94 × 62 × 14 mm · watertight</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="cta">
+      <h2>Make the thing you’ve been describing.</h2>
+      <p>Shapecraft is in early access. Leave your email and we’ll let you in.</p>
+      <form class="cta-form" onsubmit="return false;">
+        <input type="email" placeholder="you@example.com" aria-label="Email address" required />
+        <button class="btn btn-primary" type="submit">Request access</button>
+      </form>
+      <small class="cta-note">No spam. Just a note when your spot opens up.</small>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="brand"><span class="brand-mark">◆</span><span class="brand-name">shapecraft</span></div>
+    <p>Describe it. Shape it. Make it yours.</p>
+    <small>© <span id="year"></span> Shapecraft. A text-to-CAD experiment.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

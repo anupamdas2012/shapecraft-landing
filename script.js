@@ -86,4 +86,17 @@
     const stop = () => { running = false; cancelAnimationFrame(raf); };
     new IntersectionObserver(es => { for (const e of es) e.isIntersecting ? start() : stop(); }, { threshold: 0.2 }).observe(panel);
   }
+
+  /* ---------- Marketplace: hover horizontally to scrub-rotate each part ---------- */
+  for (const thumb of document.querySelectorAll('.listing-thumb.spin')) {
+    const frames = +thumb.dataset.frames || 24;
+    thumb.style.backgroundSize = (frames * 100) + '% 100%';
+    thumb.addEventListener('pointermove', e => {
+      const r = thumb.getBoundingClientRect();
+      const frac = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      const f = Math.round(frac * (frames - 1));
+      thumb.style.backgroundPositionX = (f / (frames - 1) * 100) + '%';
+    });
+    thumb.addEventListener('pointerleave', () => { thumb.style.backgroundPositionX = '0%'; });
+  }
 })();

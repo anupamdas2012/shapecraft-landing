@@ -332,7 +332,7 @@
       el.textContent = '';
       let i = 0;
       const t = setInterval(() => {
-        i = Math.min(i + 2, full.length);
+        i = Math.min(i + 4, full.length);
         el.textContent = full.slice(0, i);
         if (i >= full.length) clearInterval(t);
       }, 13);

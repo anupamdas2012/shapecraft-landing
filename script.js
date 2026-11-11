@@ -162,4 +162,77 @@
     }
     new IntersectionObserver(es => { for (const e of es) { if (e.isIntersecting) run(); else stoken++; } }, { threshold: 0.3 }).observe(sim);
   }
+
+  /* ---------- Gallery: click a part to open the real STL in an interactive WebGL viewer ---------- */
+  const modal = document.getElementById('viewer');
+  if (modal) {
+    const stage = modal.querySelector('.viewer-stage');
+    const titleEl = modal.querySelector('.viewer-title');
+    const statusEl = modal.querySelector('.viewer-status');
+    let V = null, loadToken = 0;
+
+    async function ensureThree() {
+      if (V) return V;
+      const THREE = await import('three');
+      const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+      const { STLLoader } = await import('three/addons/loaders/STLLoader.js');
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      stage.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true; controls.enablePan = false; controls.autoRotate = true; controls.autoRotateSpeed = 1.3;
+      controls.addEventListener('start', () => { controls.autoRotate = false; });
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x3a4046, 1.15));
+      const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(1, 1.4, 1); scene.add(key);
+      const fill = new THREE.DirectionalLight(0xffffff, 0.5); fill.position.set(-1, -0.4, -0.8); scene.add(fill);
+      const material = new THREE.MeshStandardMaterial({ color: 0x9aa3ad, roughness: 0.62, metalness: 0.08 });
+      const loader = new STLLoader();
+      let mesh = null, raf = 0, running = false;
+      const resize = () => { const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+      new ResizeObserver(resize).observe(stage);
+      const loop = () => { controls.update(); renderer.render(scene, camera); raf = requestAnimationFrame(loop); };
+      V = {
+        start() { if (!running) { running = true; loop(); } },
+        stop() { running = false; cancelAnimationFrame(raf); },
+        async load(url) {
+          const geo = await new Promise((res, rej) => loader.load(url, res, undefined, rej));
+          if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); }
+          geo.computeVertexNormals(); geo.computeBoundingBox();
+          const c = new THREE.Vector3(); geo.boundingBox.getCenter(c); geo.translate(-c.x, -c.y, -c.z);
+          geo.computeBoundingSphere();
+          const r = (geo.boundingSphere && geo.boundingSphere.radius) || 50;
+          mesh = new THREE.Mesh(geo, material); mesh.rotation.x = -Math.PI / 2; scene.add(mesh);   // app geometry is Z-up
+          const dist = (r / Math.sin((camera.fov * Math.PI / 180) / 2)) * 1.25;
+          camera.position.set(dist * 0.6, dist * 0.45, dist * 0.85);
+          controls.autoRotate = true; controls.target.set(0, 0, 0);
+          controls.minDistance = r * 0.5; controls.maxDistance = dist * 4; controls.update();
+          resize();
+        },
+      };
+      return V;
+    }
+
+    async function open(url, title) {
+      const me = ++loadToken;
+      titleEl.textContent = title || '';
+      statusEl.textContent = 'Loading 3D…';
+      modal.hidden = false; document.body.style.overflow = 'hidden';
+      try {
+        const v = await ensureThree(); if (me !== loadToken) return;
+        v.start(); await v.load(url); if (me !== loadToken) return;
+        statusEl.textContent = '';
+      } catch (err) { statusEl.textContent = 'Could not load the model.'; }
+    }
+    function close() { loadToken++; modal.hidden = true; document.body.style.overflow = ''; V && V.stop(); }
+
+    for (const card of document.querySelectorAll('.listing[data-model]')) {
+      card.addEventListener('click', () => open(card.dataset.model, card.dataset.title));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card.dataset.model, card.dataset.title); } });
+    }
+    for (const el of modal.querySelectorAll('[data-close]')) el.addEventListener('click', close);
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
+  }
 })();

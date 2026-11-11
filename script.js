@@ -112,30 +112,57 @@
     new IntersectionObserver(es => { for (const e of es) { if (e.isIntersecting) run(); else token++; } }, { threshold: 0.3 }).observe(demo);
   }
 
-  /* ---------- Parametric slider viz: thumbs + values drift, part need not move ---------- */
+  /* ---------- Parametric grommet: width/height drift on their own, then you take control ---------- */
   const panel = document.getElementById('paramPanel');
-  if (panel) {
+  const gview = document.getElementById('grommetView');
+  if (panel && gview) {
+    const VALS = [24, 36, 48, 60, 72, 84, 96, 108], N = VALS.length;
+    const state = { width: 3, height: 3 };          // float index 0..N-1 (starts at 60 mm)
     const sliders = [...panel.querySelectorAll('.p-slider')].map(el => ({
-      fill: el.querySelector('.p-fill'), thumb: el.querySelector('.p-thumb'), val: el.querySelector('.p-val'),
-      min: +el.dataset.min, max: +el.dataset.max, unit: el.dataset.unit || '', dec: +el.dataset.dec || 0,
-      phase: Math.random() * Math.PI * 2, speed: 0.22 + Math.random() * 0.3,
+      key: el.dataset.param, unit: el.dataset.unit || '',
+      fill: el.querySelector('.p-fill'), thumb: el.querySelector('.p-thumb'),
+      val: el.querySelector('.p-val'), track: el.querySelector('.p-track'),
+      phase: Math.random() * Math.PI * 2, speed: 0.16 + Math.random() * 0.2,
     }));
-    let raf = 0, running = false;
+    function paint(s) {
+      const pct = state[s.key] / (N - 1) * 100;
+      s.fill.style.width = pct + '%';
+      s.thumb.style.left = pct + '%';
+      s.val.textContent = VALS[Math.round(state[s.key])] + (s.unit ? ' ' + s.unit : '');
+    }
+    function render() {
+      gview.style.backgroundPositionX = (Math.round(state.width) / (N - 1) * 100) + '%';
+      gview.style.backgroundPositionY = (Math.round(state.height) / (N - 1) * 100) + '%';
+    }
+    function paintAll() { for (const s of sliders) paint(s); render(); }
+
+    let interacted = false, raf = 0, running = false;
     function frame(t) {
-      for (const s of sliders) {
-        const u = 0.5 + 0.5 * Math.sin(t / 1000 * s.speed + s.phase);
-        let v = s.min + u * (s.max - s.min);
-        if (s.dec === 0) v = Math.round(v);
-        const pct = (v - s.min) / (s.max - s.min) * 100;
-        s.fill.style.width = pct + '%';
-        s.thumb.style.left = pct + '%';
-        s.val.textContent = v.toFixed(s.dec) + (s.unit ? ' ' + s.unit : '');
-      }
+      if (interacted) { running = false; return; }
+      for (const s of sliders) state[s.key] = (0.5 + 0.5 * Math.sin(t / 1000 * s.speed + s.phase)) * (N - 1);
+      paintAll();
       raf = requestAnimationFrame(frame);
     }
-    const start = () => { if (!running && !reduce) { running = true; raf = requestAnimationFrame(frame); } };
+    const start = () => { if (!running && !reduce && !interacted) { running = true; raf = requestAnimationFrame(frame); } };
     const stop = () => { running = false; cancelAnimationFrame(raf); };
     new IntersectionObserver(es => { for (const e of es) e.isIntersecting ? start() : stop(); }, { threshold: 0.2 }).observe(panel);
+
+    let active = null;
+    function setFromPointer(s, clientX) {
+      const r = s.track.getBoundingClientRect();
+      state[s.key] = Math.min(1, Math.max(0, (clientX - r.left) / r.width)) * (N - 1);
+      paint(s); render();
+    }
+    for (const s of sliders) {
+      s.track.addEventListener('pointerdown', e => {
+        if (!interacted) { interacted = true; stop(); }
+        active = s; setFromPointer(s, e.clientX); e.preventDefault();
+      });
+    }
+    addEventListener('pointermove', e => { if (active) setFromPointer(active, e.clientX); });
+    addEventListener('pointerup', () => { active = null; });
+
+    paintAll();   // initial frame (and the static view under reduced motion)
   }
 
   /* ---------- Marketplace: rotate each part — hover-scrub on desktop, scroll-driven on touch ---------- */

@@ -345,28 +345,23 @@
       el.textContent = el.dataset.full;
     }
     if (touch) {
-      // Mobile has no hover, so auto-reveal each reply in sequence on a loop
-      // until the user taps one, then hand off to tap-to-toggle.
-      let cycleTimer = null, cycling = false, idx = 0;
-      function openOnly(li) {
-        for (const o of items) { if (o !== li) { o.classList.remove('pp-open'); reset(o); } }
-        if (li) { li.classList.add('pp-open'); type(li); }
+      // Mobile has no hover: auto-type each reply in sequence and leave them
+      // all visible. Tap input is disabled (not focusable, no handlers).
+      for (const li of items) li.removeAttribute('tabindex');
+      if (reduce) {
+        for (const li of items) li.classList.add('pp-open');
+      } else {
+        let idx = 0;
+        function revealNext() {
+          const li = items[idx];
+          if (!li) return;
+          li.classList.add('pp-open');
+          type(li);
+          idx++;
+          if (idx < items.length) setTimeout(revealNext, 5000);
+        }
+        setTimeout(revealNext, 500);
       }
-      function step() {
-        if (!cycling) return;
-        openOnly(items[idx]);
-        idx = (idx + 1) % items.length;
-        cycleTimer = setTimeout(step, 5000);
-      }
-      function stopCycle() { cycling = false; clearTimeout(cycleTimer); }
-      if (!reduce) { cycling = true; cycleTimer = setTimeout(step, 500); }
-      document.addEventListener('click', e => {
-        const li = e.target.closest('.pain-points li');
-        if (!li) return;
-        stopCycle();
-        if (li.classList.contains('pp-open')) { li.classList.remove('pp-open'); reset(li); }
-        else { openOnly(li); }
-      });
     } else {
       for (const li of items) {
         li.addEventListener('mouseenter', () => type(li));

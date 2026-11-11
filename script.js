@@ -356,7 +356,7 @@
         if (!cycling) return;
         openOnly(items[idx]);
         idx = (idx + 1) % items.length;
-        cycleTimer = setTimeout(step, 2500);
+        cycleTimer = setTimeout(step, 5000);
       }
       function stopCycle() { cycling = false; clearTimeout(cycleTimer); }
       if (!reduce) { cycling = true; cycleTimer = setTimeout(step, 500); }

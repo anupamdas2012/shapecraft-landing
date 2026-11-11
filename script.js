@@ -332,7 +332,8 @@
       el.textContent = '';
       let i = 0;
       const t = setInterval(() => {
-        el.textContent = full.slice(0, ++i);
+        i = Math.min(i + 2, full.length);
+        el.textContent = full.slice(0, i);
         if (i >= full.length) clearInterval(t);
       }, 13);
       timers.set(li, t);

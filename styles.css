@@ -73,12 +73,12 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
   padding: 5px 12px; border-radius: 999px; margin-bottom: 20px;
 }
 .hero h1 { font-size: clamp(38px, 5vw, 60px); font-weight: 800; }
-.pain-points { list-style: none; padding: 0; margin: 20px 0 16px; max-width: 33em; display: flex; flex-direction: column; gap: 9px; }
-.pain-points li { position: relative; padding-left: 20px; color: var(--muted); font-size: 15.5px; line-height: 1.45; outline: none; }
+.pain-points { list-style: none; padding: 0; margin: 20px 0 16px; max-width: 33em; display: flex; flex-direction: column; gap: 0; }
+.pain-points li { position: relative; padding: 0 0 9px 20px; color: var(--muted); font-size: 15.5px; line-height: 1.45; outline: none; }
 .pain-points li::before { content: "•"; position: absolute; left: 2px; top: 0; color: var(--muted-2); font-weight: 700; transition: color .2s ease; }
 .pp-q { display: block; transition: color .2s ease; }
-.pp-a { display: grid; grid-template-rows: 0fr; margin-left: 14px; opacity: 0; transition: grid-template-rows .4s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, margin-top .35s ease; }
-.pp-a-inner { overflow: hidden; min-height: 0; display: flex; flex-direction: column; gap: 3px; padding: 0 13px; background: var(--bg-3); border: 1px solid var(--line); border-radius: 13px 13px 13px 4px; color: #cfd3d8; font-size: 14px; line-height: 1.45; transition: padding .35s ease; }
+.pp-a { display: grid; grid-template-rows: 0fr; margin-left: 14px; opacity: 0; transition: grid-template-rows .17s cubic-bezier(.4, 0, .2, 1), opacity .13s ease, margin-top .17s ease; }
+.pp-a-inner { overflow: hidden; min-height: 0; display: flex; flex-direction: column; gap: 3px; padding: 0 13px; background: var(--bg-3); border: 1px solid var(--line); border-radius: 13px 13px 13px 4px; color: #cfd3d8; font-size: 14px; line-height: 1.45; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); transition: padding .17s ease; }
 .pp-who { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); font-weight: 700; font-size: 12.5px; }
 .pp-mark { color: var(--accent); font-size: 11px; }
 /* revealed: keyboard focus + mobile tap (.pp-open); hover added below for pointer devices */

@@ -231,7 +231,9 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 .p-track { cursor: pointer; touch-action: none; }
 .p-track::before { content: ""; position: absolute; inset: -13px 0; }
 .p-track:active { cursor: grabbing; }
-.param-panel-foot { margin-top: 18px; padding-top: 13px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted-2); text-align: center; }
+.param-actions { display: flex; gap: 10px; margin-top: 18px; }
+.param-actions .btn { flex: 1; padding: 10px 14px; font-size: 14px; text-decoration: none; }
+.param-panel-foot { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted-2); text-align: center; }
 
 /* Skills */
 .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }

@@ -5,6 +5,7 @@
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let openViewer = null;   // set by the gallery 3D viewer; reused by the parametric "View in 3D" button
 
   /* ---------- Demo: play conversation chapters, each ending in a 3D spin of its final part ---------- */
   const demo = document.getElementById('demo');
@@ -118,6 +119,10 @@
   if (panel && gview) {
     const VALS = [24, 36, 48, 60, 72, 84, 96, 108], N = VALS.length;
     const state = { width: 3, height: 3 };          // float index 0..N-1 (starts at 60 mm)
+    const dl = document.getElementById('grommetDl');
+    const view3d = document.getElementById('grommetView3d');
+    const stlURL = (wi, hi) => 'assets/param/grommet/w' + wi + '_h' + hi + '.stl';
+    const stlName = (wi, hi) => 'Cable-Grommet-' + VALS[wi] + 'x' + VALS[hi] + 'mm.stl';
     const sliders = [...panel.querySelectorAll('.p-slider')].map(el => ({
       key: el.dataset.param, unit: el.dataset.unit || '',
       fill: el.querySelector('.p-fill'), thumb: el.querySelector('.p-thumb'),
@@ -131,8 +136,10 @@
       s.val.textContent = VALS[Math.round(state[s.key])] + (s.unit ? ' ' + s.unit : '');
     }
     function render() {
-      gview.style.backgroundPositionX = (Math.round(state.width) / (N - 1) * 100) + '%';
-      gview.style.backgroundPositionY = (Math.round(state.height) / (N - 1) * 100) + '%';
+      const wi = Math.round(state.width), hi = Math.round(state.height);
+      gview.style.backgroundPositionX = (wi / (N - 1) * 100) + '%';
+      gview.style.backgroundPositionY = (hi / (N - 1) * 100) + '%';
+      if (dl) { dl.href = stlURL(wi, hi); dl.download = stlName(wi, hi); }
     }
     function paintAll() { for (const s of sliders) paint(s); render(); }
 
@@ -161,6 +168,11 @@
     }
     addEventListener('pointermove', e => { if (active) setFromPointer(active, e.clientX); });
     addEventListener('pointerup', () => { active = null; });
+
+    if (view3d) view3d.addEventListener('click', () => {
+      const wi = Math.round(state.width), hi = Math.round(state.height);
+      if (openViewer) openViewer({ model: stlURL(wi, hi), title: 'Cable grommet · ' + VALS[wi] + ' × ' + VALS[hi] + ' mm', filename: stlName(wi, hi) });
+    });
 
     paintAll();   // initial frame (and the static view under reduced motion)
   }
@@ -294,20 +306,20 @@
       return V;
     }
 
-    async function open(card) {
-      const url = card.dataset.model, title = card.dataset.title;
+    async function open(opts) {
+      const url = opts.model, title = opts.title || '';
       const me = ++loadToken;
-      titleEl.textContent = title || '';
-      promptText.textContent = card.dataset.prompt || '';
+      titleEl.textContent = title;
+      promptText.textContent = opts.prompt || '';
       refsWrap.innerHTML = '';
-      const refs = (card.dataset.refs || '').split(',').map(s => s.trim()).filter(Boolean);
+      const refs = (opts.refs || '').split(',').map(s => s.trim()).filter(Boolean);
       refsWrap.hidden = !refs.length;
       for (const src of refs) {
         const a = document.createElement('a'); a.href = src; a.target = '_blank'; a.rel = 'noopener';
         const im = document.createElement('img'); im.src = src; im.alt = 'Reference image'; im.loading = 'lazy';
         a.appendChild(im); refsWrap.appendChild(a);
       }
-      dlLink.href = url; dlLink.setAttribute('download', (title || 'model').replace(/[^\w.-]+/g, '-') + '.stl');
+      dlLink.href = url; dlLink.setAttribute('download', opts.filename || ((title || 'model').replace(/[^\w.-]+/g, '-') + '.stl'));
       statusEl.textContent = 'Loading 3D…';
       modal.hidden = false; document.body.style.overflow = 'hidden';
       try {
@@ -316,11 +328,13 @@
         statusEl.textContent = '';
       } catch (err) { statusEl.textContent = 'Could not load the model.'; }
     }
+    openViewer = open;
     function close() { loadToken++; modal.hidden = true; document.body.style.overflow = ''; V && V.stop(); }
 
     for (const card of document.querySelectorAll('.listing[data-model]')) {
-      card.addEventListener('click', () => open(card));
-      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card); } });
+      const show = () => open({ model: card.dataset.model, title: card.dataset.title, prompt: card.dataset.prompt, refs: card.dataset.refs });
+      card.addEventListener('click', show);
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(); } });
     }
     for (const dl of document.querySelectorAll('.listing-dl')) dl.addEventListener('click', e => e.stopPropagation());
     for (const el of modal.querySelectorAll('[data-close]')) el.addEventListener('click', close);

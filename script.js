@@ -13,6 +13,7 @@
     const typedEl = demo.querySelector('.demo-typed');
     const tabEl = demo.querySelector('.demo-tab');
     const spinVid = demo.querySelector('.demo-spin-vid');
+    const spinPhoto = demo.querySelector('.demo-spin-photo');
     const spinTag = demo.querySelector('.demo-spin-tag');
     let token = 0;
     const scrollDown = () => thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
@@ -27,7 +28,8 @@
           b: 'Done — the cradle now sits 23° above the base. Straps, saddle, and M3 holes unchanged.',
           img: 'assets/demo/uat2.png', cap: 'Updated · 23° tilt', tag: 'rev 2' },
       ] },
-      { tab: 'Oven Knob', spin: 'assets/spin/knob.mp4', spinLabel: 'Oven Knob · drag to rotate', turns: [
+      { tab: 'Oven Knob', spin: 'assets/spin/knob.mp4', spinLabel: 'Oven Knob · drag to rotate',
+        photo: 'assets/demo/knob-real.jpg', photoLabel: 'Printed, and back on the oven', turns: [
         { u: 'Design a replacement oven knob for a GE Profile range.',
           b: 'Here’s a push-on knob with a knurled grip and a D-shaft socket sized to the GE Profile stem.',
           img: 'assets/demo/knob.png', cap: 'Oven Knob', tag: 'GE Profile' },
@@ -59,7 +61,7 @@
     }
     function clearThread() {
       for (const n of [...thread.querySelectorAll('.d-msg')]) n.remove();
-      demo.classList.remove('typing', 'spinning'); demo.classList.add('empty');
+      demo.classList.remove('typing', 'spinning', 'photo'); demo.classList.add('empty');
       typedEl.textContent = ''; thread.scrollTop = 0;
     }
 
@@ -82,6 +84,12 @@
       spinVid.src = ch.spin; spinTag.textContent = ch.spinLabel;                  // full-window spin of the final part
       demo.classList.add('spinning'); spinVid.play && spinVid.play().catch(() => {});
       await sleep(3900); if (!alive()) return;
+      if (ch.photo) {                                                             // then the real, printed part
+        spinPhoto.src = ch.photo; spinTag.textContent = ch.photoLabel;
+        demo.classList.add('photo');
+        await sleep(3600); if (!alive()) return;
+        demo.classList.remove('photo');
+      }
       demo.classList.remove('spinning'); spinVid.pause && spinVid.pause();
       await sleep(450); if (!alive()) return;
     }

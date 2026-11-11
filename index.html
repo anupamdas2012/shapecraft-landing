@@ -248,24 +248,32 @@
     <!-- GALLERY -->
     <section class="section section-alt" id="gallery">
       <div class="section-head">
-        <h2>See what you can make.</h2>
-        <p>Real parts, each designed from a sentence. Click any one to spin it in 3D — right here in your browser.</p>
+        <h2>Made with <span class="accent">ShapeCraft</span></h2>
+        <p>Real parts, each designed from a description. Click any one to spin it in 3D, or download it and print on your 3D printer.</p>
       </div>
       <div class="market-grid">
-        <figure class="listing" tabindex="0" role="button" data-model="assets/models/base.stl" data-title="Pi 5 Enclosure · Base" aria-label="View the Pi 5 Enclosure Base in 3D">
-          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/base.webp')" data-frames="24"></div>
+        <figure class="listing" tabindex="0" role="button" data-model="assets/models/base.stl" data-title="Pi 5 Enclosure · Base" data-prompt="create a snap-fit enclosure for a Raspberry Pi 5" aria-label="View the Pi 5 Enclosure Base in 3D">
+          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/base.webp')" data-frames="24">
+            <a class="listing-dl" href="assets/models/base.stl" download="Pi5-Enclosure-Base.stl">↓ STL</a>
+          </div>
           <figcaption><span class="listing-title">Pi 5 Enclosure · Base</span><span class="listing-view">View in 3D →</span></figcaption>
         </figure>
-        <figure class="listing" tabindex="0" role="button" data-model="assets/models/lid.stl" data-title="Snap-Fit Vented Lid" aria-label="View the Snap-Fit Vented Lid in 3D">
-          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/lid.webp')" data-frames="24"></div>
-          <figcaption><span class="listing-title">Snap-Fit Vented Lid</span><span class="listing-view">View in 3D →</span></figcaption>
+        <figure class="listing" tabindex="0" role="button" data-model="assets/models/lid.stl" data-title="Pi 5 Enclosure · Lid" data-prompt="create a snap-fit enclosure for a Raspberry Pi 5" aria-label="View the Pi 5 Enclosure · Lid in 3D">
+          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/lid.webp')" data-frames="24">
+            <a class="listing-dl" href="assets/models/lid.stl" download="Pi5-Enclosure-Lid.stl">↓ STL</a>
+          </div>
+          <figcaption><span class="listing-title">Pi 5 Enclosure · Lid</span><span class="listing-view">View in 3D →</span></figcaption>
         </figure>
-        <figure class="listing" tabindex="0" role="button" data-model="assets/models/knob.stl" data-title="Oven Knob · GE Profile" aria-label="View the Oven Knob in 3D">
-          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/knob.webp')" data-frames="24"></div>
+        <figure class="listing" tabindex="0" role="button" data-model="assets/models/knob.stl" data-title="Oven Knob · GE Profile" data-prompt="A replacement oven knob for a GE Profile range, with a D-shaft socket." data-refs="assets/gallery/knob-ref.jpg" aria-label="View the Oven Knob in 3D">
+          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/knob.webp')" data-frames="24">
+            <a class="listing-dl" href="assets/models/knob.stl" download="Oven-Knob-GE-Profile.stl">↓ STL</a>
+          </div>
           <figcaption><span class="listing-title">Oven Knob · GE Profile</span><span class="listing-view">View in 3D →</span></figcaption>
         </figure>
-        <figure class="listing" tabindex="0" role="button" data-model="assets/models/switch.stl" data-title="Powerbox Switch Flush Mount" aria-label="View the Powerbox Switch Flush Mount in 3D">
-          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/switch.webp')" data-frames="24"></div>
+        <figure class="listing" tabindex="0" role="button" data-model="assets/models/switch.stl" data-title="Powerbox Switch Flush Mount" data-prompt="A flush-mount tray for a Powerbox switch, with a sci-fi, RED-camera aesthetic." data-refs="assets/gallery/switch-ref.jpg" aria-label="View the Powerbox Switch Flush Mount in 3D">
+          <div class="listing-thumb spin" style="background-image:url('assets/market/spin/switch.webp')" data-frames="24">
+            <a class="listing-dl" href="assets/models/switch.stl" download="Powerbox-Switch-Flush-Mount.stl">↓ STL</a>
+          </div>
           <figcaption><span class="listing-title">Powerbox Switch Flush Mount</span><span class="listing-view">View in 3D →</span></figcaption>
         </figure>
       </div>
@@ -274,7 +282,6 @@
     <!-- CTA -->
     <section class="cta" id="cta">
       <h2>What will you make?</h2>
-      <p>That idea you’ve been thinking about? The part you can’t find? The project you’ve always wanted to try? You don’t need to know CAD — you just need an idea.</p>
       <form class="cta-form" id="accessForm">
         <input type="email" id="accessEmail" placeholder="you@example.com" aria-label="Email address" required />
         <button class="btn btn-primary" type="submit">Request access</button>
@@ -286,7 +293,7 @@
   <footer class="footer">
     <div class="brand"><span class="brand-mark">◆</span><span class="brand-name">shapecraft</span></div>
     <p>Describe it. Shape it. Make it.</p>
-    <small>© <span id="year"></span> Shapecraft. A text-to-CAD experiment.</small>
+    <small>© <span id="year"></span> Shapecraft.</small>
   </footer>
 
   <!-- Interactive 3D part viewer -->
@@ -298,7 +305,14 @@
         <button class="viewer-close" type="button" aria-label="Close" data-close>✕</button>
       </div>
       <div class="viewer-stage"></div>
-      <div class="viewer-foot"><span class="viewer-status"></span><span class="viewer-hint">Drag to rotate · scroll to zoom</span></div>
+      <div class="viewer-info">
+        <p class="viewer-prompt"><span class="viewer-ilabel">Prompt</span> <span class="viewer-prompt-text"></span></p>
+        <div class="viewer-refs" hidden></div>
+      </div>
+      <div class="viewer-foot">
+        <span class="viewer-hint">Drag to rotate · scroll to zoom</span>
+        <div class="viewer-foot-right"><span class="viewer-status"></span><a class="viewer-dl btn btn-primary" download>↓ Download STL</a></div>
+      </div>
     </div>
   </div>
 

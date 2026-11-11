@@ -218,6 +218,9 @@
     const stage = modal.querySelector('.viewer-stage');
     const titleEl = modal.querySelector('.viewer-title');
     const statusEl = modal.querySelector('.viewer-status');
+    const promptText = modal.querySelector('.viewer-prompt-text');
+    const refsWrap = modal.querySelector('.viewer-refs');
+    const dlLink = modal.querySelector('.viewer-dl');
     let V = null, loadToken = 0;
 
     async function ensureThree() {
@@ -264,9 +267,20 @@
       return V;
     }
 
-    async function open(url, title) {
+    async function open(card) {
+      const url = card.dataset.model, title = card.dataset.title;
       const me = ++loadToken;
       titleEl.textContent = title || '';
+      promptText.textContent = card.dataset.prompt || '';
+      refsWrap.innerHTML = '';
+      const refs = (card.dataset.refs || '').split(',').map(s => s.trim()).filter(Boolean);
+      refsWrap.hidden = !refs.length;
+      for (const src of refs) {
+        const a = document.createElement('a'); a.href = src; a.target = '_blank'; a.rel = 'noopener';
+        const im = document.createElement('img'); im.src = src; im.alt = 'Reference image'; im.loading = 'lazy';
+        a.appendChild(im); refsWrap.appendChild(a);
+      }
+      dlLink.href = url; dlLink.setAttribute('download', (title || 'model').replace(/[^\w.-]+/g, '-') + '.stl');
       statusEl.textContent = 'Loading 3D…';
       modal.hidden = false; document.body.style.overflow = 'hidden';
       try {
@@ -278,9 +292,10 @@
     function close() { loadToken++; modal.hidden = true; document.body.style.overflow = ''; V && V.stop(); }
 
     for (const card of document.querySelectorAll('.listing[data-model]')) {
-      card.addEventListener('click', () => open(card.dataset.model, card.dataset.title));
-      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card.dataset.model, card.dataset.title); } });
+      card.addEventListener('click', () => open(card));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card); } });
     }
+    for (const dl of document.querySelectorAll('.listing-dl')) dl.addEventListener('click', e => e.stopPropagation());
     for (const el of modal.querySelectorAll('[data-close]')) el.addEventListener('click', close);
     addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
   }

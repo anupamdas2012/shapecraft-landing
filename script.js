@@ -377,22 +377,22 @@
       el.textContent = el.dataset.full;
     }
     if (touch) {
-      // Mobile has no hover: auto-type each reply in sequence and leave them
-      // all visible. Tap input is disabled (not focusable, no handlers).
+      // Mobile has no hover: reveal each reply as its question scrolls into view
+      // (scroll-driven accordion) and leave it open. Tap input is disabled.
       for (const li of items) li.removeAttribute('tabindex');
       if (reduce) {
-        for (const li of items) li.classList.add('pp-open');
+        for (const li of items) { li.classList.add('pp-open'); const el = li.querySelector('.pp-a-text'); if (el) el.textContent = el.dataset.full; }
       } else {
-        let idx = 0;
-        function revealNext() {
-          const li = items[idx];
-          if (!li) return;
-          li.classList.add('pp-open');
-          type(li);
-          idx++;
-          if (idx < items.length) setTimeout(revealNext, 5000);
-        }
-        setTimeout(revealNext, 500);
+        const io = new IntersectionObserver(es => {
+          for (const e of es) {
+            if (e.isIntersecting && !e.target.classList.contains('pp-open')) {
+              e.target.classList.add('pp-open');
+              type(e.target);
+              io.unobserve(e.target);
+            }
+          }
+        }, { rootMargin: '-42% 0px -42% 0px' });   // fire as each question crosses the screen's middle
+        for (const li of items) io.observe(li);
       }
     } else {
       for (const li of items) {

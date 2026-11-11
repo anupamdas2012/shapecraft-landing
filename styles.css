@@ -318,6 +318,8 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 }
 .cta-form input:focus { outline: none; border-color: var(--accent); }
 .cta-note { display: block; margin-top: 14px; color: var(--muted-2); font-size: 13px; }
+.cta-done { color: var(--accent); font-weight: 600; font-size: 16.5px; margin: 0; }
+.cta-error { flex-basis: 100%; color: #e0776b; font-size: 13.5px; margin: 10px 0 0; }
 
 /* Footer */
 .footer { border-top: 1px solid var(--line); text-align: center; padding: 40px 24px; color: var(--muted); }

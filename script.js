@@ -341,15 +341,40 @@
     addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
   }
 
-  /* ---------- Early-access form: open a pre-filled email to the inbox ---------- */
+  /* ---------- Early-access form: POST the email to a form backend ---------- */
   const accessForm = document.getElementById('accessForm');
   if (accessForm) {
-    accessForm.addEventListener('submit', e => {
+    // Paste your Formspree form endpoint to turn on real signups,
+    // e.g. 'https://formspree.io/f/xxxxxxx'. Empty = fall back to a pre-filled email.
+    const SIGNUP_ENDPOINT = '';
+    const emailInput = document.getElementById('accessEmail');
+    accessForm.addEventListener('submit', async e => {
       e.preventDefault();
-      const email = (document.getElementById('accessEmail').value || '').trim();
-      const subject = encodeURIComponent('Shapecraft early access');
-      const body = encodeURIComponent('I’d like early access to Shapecraft.' + (email ? '\n\nMy email: ' + email : ''));
-      location.href = 'mailto:das.anupam@gmail.com?subject=' + subject + '&body=' + body;
+      const email = (emailInput.value || '').trim();
+      if (!email) return;
+      if (!SIGNUP_ENDPOINT) {
+        const subject = encodeURIComponent('Shapecraft early access');
+        const body = encodeURIComponent('I’d like early access to Shapecraft.\n\nMy email: ' + email);
+        location.href = 'mailto:das.anupam@gmail.com?subject=' + subject + '&body=' + body;
+        return;
+      }
+      const btn = accessForm.querySelector('button[type="submit"]');
+      const label = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Joining…'; }
+      try {
+        const res = await fetch(SIGNUP_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, _subject: 'New Shapecraft early-access signup' }),
+        });
+        if (!res.ok) throw new Error('signup failed');
+        accessForm.innerHTML = '<p class="cta-done">Thanks — you’re on the early-access list. We’ll be in touch at launch.</p>';
+      } catch (err) {
+        if (btn) { btn.disabled = false; btn.textContent = label; }
+        let note = accessForm.querySelector('.cta-error');
+        if (!note) { note = document.createElement('p'); note.className = 'cta-error'; accessForm.appendChild(note); }
+        note.textContent = 'Something went wrong — please try again, or email das.anupam@gmail.com.';
+      }
     });
   }
 

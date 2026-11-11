@@ -345,12 +345,27 @@
       el.textContent = el.dataset.full;
     }
     if (touch) {
+      // Mobile has no hover, so auto-reveal each reply in sequence on a loop
+      // until the user taps one, then hand off to tap-to-toggle.
+      let cycleTimer = null, cycling = false, idx = 0;
+      function openOnly(li) {
+        for (const o of items) { if (o !== li) { o.classList.remove('pp-open'); reset(o); } }
+        if (li) { li.classList.add('pp-open'); type(li); }
+      }
+      function step() {
+        if (!cycling) return;
+        openOnly(items[idx]);
+        idx = (idx + 1) % items.length;
+        cycleTimer = setTimeout(step, 2500);
+      }
+      function stopCycle() { cycling = false; clearTimeout(cycleTimer); }
+      if (!reduce) { cycling = true; cycleTimer = setTimeout(step, 500); }
       document.addEventListener('click', e => {
         const li = e.target.closest('.pain-points li');
-        for (const o of items) { if (o !== li) { o.classList.remove('pp-open'); reset(o); } }
         if (!li) return;
+        stopCycle();
         if (li.classList.contains('pp-open')) { li.classList.remove('pp-open'); reset(li); }
-        else { li.classList.add('pp-open'); type(li); }
+        else { openOnly(li); }
       });
     } else {
       for (const li of items) {

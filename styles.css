@@ -320,6 +320,7 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 .cta-note { display: block; margin-top: 14px; color: var(--muted-2); font-size: 13px; }
 .cta-done { color: var(--accent); font-weight: 600; font-size: 16.5px; margin: 0; }
 .cta-error { flex-basis: 100%; color: #e0776b; font-size: 13.5px; margin: 10px 0 0; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* Footer */
 .footer { border-top: 1px solid var(--line); text-align: center; padding: 40px 24px; color: var(--muted); }
@@ -329,7 +330,13 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding-top: 48px; }
+  /* Mobile hero order: headline, then the demo, then the rest of the copy */
+  .hero { display: flex; flex-direction: column; gap: 24px; padding-top: 48px; }
+  .hero-copy { display: contents; }
+  .hero h1 { order: 1; margin: 0; }
+  .demo { order: 2; }
+  .hero-copy-rest { order: 3; }
+  .hero-copy-rest > :first-child { margin-top: 0; }
   .steps, .features { grid-template-columns: 1fr; }
   .market-grid { grid-template-columns: 1fr 1fr; }
   .param, .skills { grid-template-columns: 1fr; }

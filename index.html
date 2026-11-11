@@ -48,6 +48,7 @@
     <section class="hero">
       <div class="hero-copy">
         <h1><span class="accent">AI Co-Design</span><br />for 3D-Printed Parts<br />That Actually Work.</h1>
+        <div class="hero-copy-rest">
         <ul class="pain-points">
           <li tabindex="0">
             <span class="pp-q">I can’t find the exact model I need.</span>
@@ -72,6 +73,7 @@
           <li>Print-ready solids</li>
           <li>STL &amp; STEP export</li>
         </ul>
+        </div>
       </div>
 
       <!-- DEMO: shaping parts through conversation (JS plays a sequence of chapters) -->
@@ -283,8 +285,13 @@
     <!-- CTA -->
     <section class="cta" id="cta">
       <h2>Start building now.</h2>
-      <form class="cta-form" id="accessForm">
-        <input type="email" id="accessEmail" placeholder="you@example.com" aria-label="Email address" required />
+      <form class="cta-form" id="accessForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="d494d766-dccd-443a-bec5-3c5b9d102a58" />
+        <input type="hidden" name="subject" value="New Shapecraft early-access signup" />
+        <input type="hidden" name="from_name" value="Shapecraft early access" />
+        <input type="hidden" name="redirect" value="https://shapecraft.ai/thanks.html" />
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <input type="email" name="email" id="accessEmail" placeholder="you@example.com" aria-label="Email address" required />
         <button class="btn btn-primary" type="submit">Request access</button>
       </form>
       <small class="cta-note">No spam. Just a note when your spot opens up.</small>

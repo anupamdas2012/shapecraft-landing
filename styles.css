@@ -306,7 +306,6 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; padding-top: 48px; }
-  .demo { order: -1; }
   .steps, .features { grid-template-columns: 1fr; }
   .market-grid { grid-template-columns: 1fr 1fr; }
   .param, .skills { grid-template-columns: 1fr; }

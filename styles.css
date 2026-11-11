@@ -74,8 +74,24 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
 }
 .hero h1 { font-size: clamp(38px, 5vw, 60px); font-weight: 800; }
 .pain-points { list-style: none; padding: 0; margin: 20px 0 16px; max-width: 33em; display: flex; flex-direction: column; gap: 9px; }
-.pain-points li { position: relative; padding-left: 20px; color: var(--muted); font-size: 15.5px; line-height: 1.45; }
-.pain-points li::before { content: "•"; position: absolute; left: 2px; color: var(--muted-2); font-weight: 700; }
+.pain-points li { position: relative; padding-left: 20px; color: var(--muted); font-size: 15.5px; line-height: 1.45; outline: none; }
+.pain-points li::before { content: "•"; position: absolute; left: 2px; top: 0; color: var(--muted-2); font-weight: 700; transition: color .2s ease; }
+.pp-q { display: block; transition: color .2s ease; }
+.pp-a { display: grid; grid-template-rows: 0fr; margin-left: 14px; opacity: 0; transition: grid-template-rows .4s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, margin-top .35s ease; }
+.pp-a-inner { overflow: hidden; min-height: 0; display: flex; flex-direction: column; gap: 3px; padding: 0 13px; background: var(--bg-3); border: 1px solid var(--line); border-radius: 13px 13px 13px 4px; color: #cfd3d8; font-size: 14px; line-height: 1.45; transition: padding .35s ease; }
+.pp-who { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); font-weight: 700; font-size: 12.5px; }
+.pp-mark { color: var(--accent); font-size: 11px; }
+/* revealed: keyboard focus + mobile tap (.pp-open); hover added below for pointer devices */
+.pain-points li:focus-within::before, .pain-points li.pp-open::before { color: var(--accent); }
+.pain-points li:focus-within .pp-q, .pain-points li.pp-open .pp-q { color: #fff; font-weight: 700; }
+.pain-points li:focus-within .pp-a, .pain-points li.pp-open .pp-a { grid-template-rows: 1fr; opacity: 1; margin-top: 8px; }
+.pain-points li:focus-within .pp-a-inner, .pain-points li.pp-open .pp-a-inner { padding: 9px 13px; }
+@media (hover: hover) {
+  .pain-points li:hover::before { color: var(--accent); }
+  .pain-points li:hover .pp-q { color: #fff; font-weight: 700; }
+  .pain-points li:hover .pp-a { grid-template-rows: 1fr; opacity: 1; margin-top: 8px; }
+  .pain-points li:hover .pp-a-inner { padding: 9px 13px; }
+}
 .lede-lead { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.5; max-width: 33em; margin: 2px 0 26px; }
 .lede { color: var(--muted); font-size: 15.5px; max-width: 33em; margin: 0 0 26px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -321,4 +337,5 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
   .d-msg, .d-card-stage img { transition: none; }
   .spinner { animation: none; }
   .demo-caret { animation: none; }
+  .pp-a, .pp-a-inner, .pp-q, .pain-points li::before { transition: none; }
 }

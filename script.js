@@ -311,4 +311,53 @@
       location.href = 'mailto:das.anupam@gmail.com?subject=' + subject + '&body=' + body;
     });
   }
+
+  /* ---------- Pain-point replies: Shapecraft "types" a reply on reveal ---------- */
+  (function () {
+    const items = Array.from(document.querySelectorAll('.pain-points li'));
+    if (!items.length) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const touch = matchMedia('(hover: none)').matches;
+    const timers = new WeakMap();
+    for (const li of items) {
+      const el = li.querySelector('.pp-a-text');
+      if (el) el.dataset.full = el.textContent;
+    }
+    function type(li) {
+      const el = li.querySelector('.pp-a-text');
+      if (!el) return;
+      const full = el.dataset.full;
+      clearInterval(timers.get(li));
+      if (reduce) { el.textContent = full; return; }
+      el.textContent = '';
+      let i = 0;
+      const t = setInterval(() => {
+        el.textContent = full.slice(0, ++i);
+        if (i >= full.length) clearInterval(t);
+      }, 13);
+      timers.set(li, t);
+    }
+    function reset(li) {
+      const el = li.querySelector('.pp-a-text');
+      if (!el) return;
+      clearInterval(timers.get(li));
+      el.textContent = el.dataset.full;
+    }
+    if (touch) {
+      document.addEventListener('click', e => {
+        const li = e.target.closest('.pain-points li');
+        for (const o of items) { if (o !== li) { o.classList.remove('pp-open'); reset(o); } }
+        if (!li) return;
+        if (li.classList.contains('pp-open')) { li.classList.remove('pp-open'); reset(li); }
+        else { li.classList.add('pp-open'); type(li); }
+      });
+    } else {
+      for (const li of items) {
+        li.addEventListener('mouseenter', () => type(li));
+        li.addEventListener('mouseleave', () => reset(li));
+        li.addEventListener('focusin', () => type(li));
+        li.addEventListener('focusout', () => reset(li));
+      }
+    }
+  })();
 })();

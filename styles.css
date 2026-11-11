@@ -73,8 +73,11 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -.02em; margin: 0; }
   padding: 5px 12px; border-radius: 999px; margin-bottom: 20px;
 }
 .hero h1 { font-size: clamp(38px, 5vw, 60px); font-weight: 800; }
-.lede { color: var(--muted); font-size: 15.5px; max-width: 33em; margin: 18px 0 14px; }
-.lede-lead { font-size: 21px; font-weight: 700; letter-spacing: -.01em; margin: 0 0 28px; }
+.pain-points { list-style: none; padding: 0; margin: 20px 0 16px; max-width: 33em; display: flex; flex-direction: column; gap: 9px; }
+.pain-points li { position: relative; padding-left: 20px; color: var(--muted); font-size: 15.5px; line-height: 1.45; }
+.pain-points li::before { content: "•"; position: absolute; left: 2px; color: var(--muted-2); font-weight: 700; }
+.lede-lead { font-size: 21px; font-weight: 700; letter-spacing: -.01em; margin: 0 0 14px; }
+.lede { color: var(--muted); font-size: 15.5px; max-width: 33em; margin: 0 0 26px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-badges { list-style: none; display: flex; gap: 20px; flex-wrap: wrap; padding: 0; margin: 28px 0 0; color: var(--muted-2); font-size: 14px; }
 .hero-badges li { display: flex; align-items: center; gap: 7px; }

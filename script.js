@@ -284,4 +284,16 @@
     for (const el of modal.querySelectorAll('[data-close]')) el.addEventListener('click', close);
     addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
   }
+
+  /* ---------- Early-access form: open a pre-filled email to the inbox ---------- */
+  const accessForm = document.getElementById('accessForm');
+  if (accessForm) {
+    accessForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = (document.getElementById('accessEmail').value || '').trim();
+      const subject = encodeURIComponent('Shapecraft early access');
+      const body = encodeURIComponent('I’d like early access to Shapecraft.' + (email ? '\n\nMy email: ' + email : ''));
+      location.href = 'mailto:das.anupam@gmail.com?subject=' + subject + '&body=' + body;
+    });
+  }
 })();

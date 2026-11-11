@@ -6,58 +6,99 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-  /* ---------- Demo: shaping a part through conversation ---------- */
+  /* ---------- Demo: play conversation chapters, each ending in a 3D spin of its final part ---------- */
   const demo = document.getElementById('demo');
   if (demo) {
     const thread = demo.querySelector('.demo-thread');
     const typedEl = demo.querySelector('.demo-typed');
-    const userMsgs = [...demo.querySelectorAll('.d-msg.user')];
-    const botMsgs = [...demo.querySelectorAll('.d-msg.bot')];
-    const PROMPTS = ['create a snap-fit enclosure for a Raspberry Pi 5', 'make the cooling vents hexagonal'];
+    const tabEl = demo.querySelector('.demo-tab');
     const spinVid = demo.querySelector('.demo-spin-vid');
-    if (reduce) spinVid?.pause();
+    const spinTag = demo.querySelector('.demo-spin-tag');
     let token = 0;
-
     const scrollDown = () => thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
-    const reveal = el => { el.hidden = false; requestAnimationFrame(() => el.classList.add('show')); };
+    const reveal = el => { el.hidden = false; requestAnimationFrame(() => el.classList.add('show')); return el; };
 
-    function resetDemo() {
-      demo.classList.remove('typing', 'spinning');
-      demo.classList.add('empty');                      // "What would you like to make?" until the first prompt
-      typedEl.textContent = '';
-      for (const el of [...userMsgs, ...botMsgs]) { el.hidden = true; el.classList.remove('show'); }
-      for (const c of demo.querySelectorAll('.d-card')) c.classList.add('building');
-      thread.scrollTop = 0;
+    const CHAPTERS = [
+      { tab: 'BVM UAT Cradle', spin: 'assets/spin/uat.mp4', spinLabel: 'BVM UAT Cradle · drag to rotate', turns: [
+        { u: 'A UAT cradle mount for an RC jet — like a BVM UAT, with M3 mounting holes.',
+          b: 'I’ll make a strap-retained UAT cradle on a flat screw-down base, with a four-hole M3 pattern and an adjustable saddle.',
+          img: 'assets/demo/uat1.png', cap: 'BVM UAT Cradle', tag: 'RC jet mount' },
+        { u: 'Give it a 23° tilt.',
+          b: 'Done — the cradle now sits 23° above the base. Straps, saddle, and M3 holes unchanged.',
+          img: 'assets/demo/uat2.png', cap: 'Updated · 23° tilt', tag: 'rev 2' },
+      ] },
+      { tab: 'Oven Knob', spin: 'assets/spin/knob.mp4', spinLabel: 'Oven Knob · drag to rotate', turns: [
+        { u: 'Design a replacement oven knob for a GE Profile range.',
+          b: 'Here’s a push-on knob with a knurled grip and a D-shaft socket sized to the GE Profile stem.',
+          img: 'assets/demo/knob.png', cap: 'Oven Knob', tag: 'GE Profile' },
+      ] },
+      { tab: 'Pi 5 Enclosure', spin: 'assets/spin/lid.mp4', spinLabel: 'Raspberry Pi 5 Enclosure · drag to rotate', turns: [
+        { u: 'create a snap-fit enclosure for a Raspberry Pi 5',
+          b: 'I’ll make a two-piece enclosure — a snap-fit lid over a base, with ventilation and cutouts for the ports, microSD, and power button. Building 2 parts: a Base tray and a ventilated Lid.',
+          img: 'assets/demo/step1.png', cap: 'Raspberry Pi 5 Enclosure', tag: 'Base · Lid' },
+        { u: 'make the cooling vents hexagonal',
+          b: 'Done — switched the cooling vents on the Base and Lid to hexagonal holes. The shell, ports, and snap-fit features are unchanged.',
+          img: 'assets/demo/step2.png', cap: 'Updated · hexagonal vents', tag: 'rev 2' },
+      ] },
+    ];
+
+    const userBubble = text => { const d = document.createElement('div'); d.className = 'd-msg user'; d.textContent = text; return d; };
+    function botBubble(turn) {
+      const d = document.createElement('div'); d.className = 'd-msg bot';
+      const p = document.createElement('p'); p.textContent = turn.b; d.appendChild(p);
+      const fig = document.createElement('figure'); fig.className = 'd-card building';
+      const st = document.createElement('div'); st.className = 'd-card-stage';
+      const sp = document.createElement('span'); sp.className = 'spinner';
+      const img = document.createElement('img'); img.src = turn.img; img.alt = '';
+      st.append(sp, img); fig.appendChild(st);
+      const cap = document.createElement('figcaption');
+      const c1 = document.createElement('span'); c1.textContent = turn.cap;
+      const c2 = document.createElement('span'); c2.className = 'd-tag'; c2.textContent = turn.tag;
+      cap.append(c1, c2); fig.appendChild(cap); d.appendChild(fig);
+      return d;
+    }
+    function clearThread() {
+      for (const n of [...thread.querySelectorAll('.d-msg')]) n.remove();
+      demo.classList.remove('typing', 'spinning'); demo.classList.add('empty');
+      typedEl.textContent = ''; thread.scrollTop = 0;
+    }
+
+    async function playChapter(ch, alive) {
+      clearThread();
+      tabEl.textContent = 'shapecraft · ' + ch.tab;
+      await sleep(650); if (!alive()) return;
+      for (const turn of ch.turns) {
+        demo.classList.add('typing'); demo.classList.remove('empty');
+        for (let k = 1; k <= turn.u.length; k++) { typedEl.textContent = turn.u.slice(0, k); await sleep(32 + Math.random() * 42); if (!alive()) return; }
+        await sleep(470); if (!alive()) return;
+        demo.classList.remove('typing'); typedEl.textContent = '';
+        reveal(thread.appendChild(userBubble(turn.u))); scrollDown();
+        await sleep(600); if (!alive()) return;
+        const bb = reveal(thread.appendChild(botBubble(turn))); scrollDown();
+        await sleep(1350); if (!alive()) return;
+        bb.querySelector('.d-card').classList.remove('building'); scrollDown();   // the model arrives
+        await sleep(1100); if (!alive()) return;
+      }
+      spinVid.src = ch.spin; spinTag.textContent = ch.spinLabel;                  // full-window spin of the final part
+      demo.classList.add('spinning'); spinVid.play && spinVid.play().catch(() => {});
+      await sleep(3900); if (!alive()) return;
+      demo.classList.remove('spinning'); spinVid.pause && spinVid.pause();
+      await sleep(450); if (!alive()) return;
     }
 
     async function run() {
-      const me = ++token; resetDemo();
-      if (reduce) {                                     // show the finished conversation, no animation
-        demo.classList.remove('empty');
-        for (let i = 0; i < PROMPTS.length; i++) { userMsgs[i].textContent = PROMPTS[i]; reveal(userMsgs[i]); reveal(botMsgs[i]); }
-        for (const c of demo.querySelectorAll('.d-card')) c.classList.remove('building');
+      const me = ++token;
+      const alive = () => me === token;
+      if (reduce) {                                       // reduced motion: render the last chapter, statically
+        clearThread(); demo.classList.remove('empty');
+        for (const turn of CHAPTERS[CHAPTERS.length - 1].turns) {
+          reveal(thread.appendChild(userBubble(turn.u)));
+          const bb = thread.appendChild(botBubble(turn)); bb.querySelector('.d-card').classList.remove('building'); reveal(bb);
+        }
         return;
       }
-      const alive = () => me === token;
-      await sleep(600); if (!alive()) return;
-      for (let i = 0; i < PROMPTS.length; i++) {
-        const p = PROMPTS[i];
-        demo.classList.add('typing'); demo.classList.remove('empty');   // type the prompt into the composer
-        for (let k = 1; k <= p.length; k++) { typedEl.textContent = p.slice(0, k); await sleep(34 + Math.random() * 44); if (!alive()) return; }
-        await sleep(520); if (!alive()) return;
-        demo.classList.remove('typing'); typedEl.textContent = '';   // send -> user bubble
-        userMsgs[i].textContent = p; reveal(userMsgs[i]); scrollDown();
-        await sleep(620); if (!alive()) return;
-        const bot = botMsgs[i]; reveal(bot); scrollDown();            // assistant reply (text + building card)
-        await sleep(1500); if (!alive()) return;
-        bot.querySelector('.d-card').classList.remove('building'); scrollDown();   // the model arrives
-        await sleep(i < PROMPTS.length - 1 ? 1700 : 1300); if (!alive()) return;
-      }
-      demo.classList.add('spinning'); spinVid && spinVid.play().catch(() => {});   // full-window spin of the finished part
-      await sleep(5000); if (!alive()) return;
-      demo.classList.remove('spinning');
-      await sleep(500); if (!alive()) return;
-      run();                                            // loop
+      for (const ch of CHAPTERS) { await playChapter(ch, alive); if (!alive()) return; }
+      run();
     }
 
     new IntersectionObserver(es => { for (const e of es) { if (e.isIntersecting) run(); else token++; } }, { threshold: 0.3 }).observe(demo);

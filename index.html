@@ -65,11 +65,11 @@
         </ul>
       </div>
 
-      <!-- DEMO: shaping a part through conversation -->
-      <div class="demo empty" id="demo" aria-label="Demo: shaping a part through conversation">
+      <!-- DEMO: shaping parts through conversation (JS plays a sequence of chapters) -->
+      <div class="demo empty" id="demo" aria-label="Demo: shaping parts through conversation">
         <div class="demo-chrome">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="demo-tab">shapecraft · Pi 5 Enclosure</span>
+          <span class="demo-tab">shapecraft</span>
         </div>
         <div class="demo-thread" id="demoThread">
           <div class="demo-empty">
@@ -77,37 +77,17 @@
             <span class="demo-empty-title">What would you like to make?</span>
             <span class="demo-empty-sub">Describe a part in plain English.</span>
           </div>
-          <!-- turn 1: describe it -->
-          <div class="d-msg user" data-step="0" hidden></div>
-          <div class="d-msg bot" data-step="0" hidden>
-            <p>I’ll make a <strong>two-piece enclosure</strong> — a snap-fit lid over a base, with ventilation and cutouts for the ports, microSD, and power button. Building <strong>2 parts</strong>: a Base tray and a ventilated Lid.</p>
-            <figure class="d-card building">
-              <div class="d-card-stage"><span class="spinner"></span><img src="assets/demo/step1.png" alt="Raspberry Pi 5 enclosure — base and lid" /></div>
-              <figcaption><span>Raspberry Pi 5 Enclosure</span><span class="d-tag">Base · Lid</span></figcaption>
-            </figure>
-          </div>
-          <!-- turn 2: refine it in chat -->
-          <div class="d-msg user" data-step="1" hidden></div>
-          <div class="d-msg bot" data-step="1" hidden>
-            <p>Done — switched the cooling vents on the Base and Lid to <strong>hexagonal holes</strong>. The shell, ports, and snap-fit features are unchanged.</p>
-            <figure class="d-card building">
-              <div class="d-card-stage"><span class="spinner"></span><img src="assets/demo/step2.png" alt="Enclosure updated with hexagonal vents" /></div>
-              <figcaption><span>Updated · hexagonal vents</span><span class="d-tag">rev 2</span></figcaption>
-            </figure>
-          </div>
         </div>
         <div class="demo-composer">
           <div class="demo-field">
             <span class="demo-typed"></span><span class="demo-caret" aria-hidden="true"></span>
-            <span class="demo-placeholder">Describe a change…</span>
+            <span class="demo-placeholder">Describe a part…</span>
           </div>
           <button class="demo-send" type="button" tabindex="-1">Send ↑</button>
         </div>
         <div class="demo-spin" aria-hidden="true">
-          <video class="demo-spin-vid" autoplay muted loop playsinline poster="assets/spin-poster.png">
-            <source src="assets/spin.mp4" type="video/mp4" />
-          </video>
-          <span class="demo-spin-tag">Raspberry Pi 5 Enclosure · drag to rotate</span>
+          <video class="demo-spin-vid" muted loop playsinline></video>
+          <span class="demo-spin-tag"></span>
         </div>
       </div>
     </section>

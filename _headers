@@ -1,0 +1,12 @@
+# Always revalidate the files that define behavior, so visitors never run a stale
+# cached copy (e.g. the old mailto form). Media/assets keep normal caching.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/thanks.html
+  Cache-Control: no-cache
+/script.js
+  Cache-Control: no-cache
+/styles.css
+  Cache-Control: no-cache
